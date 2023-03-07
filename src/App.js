@@ -14,6 +14,26 @@ function App() {
         "(prefers-color-scheme: dark)"
     ).matches;
 
+    const [songDataState, setSongDataState] = useState(songData);
+
+    function searchSongs(text) {
+        if (text === "") {
+            setSongDataState(songData);
+            return
+        }
+        const filteredSongs = songDataState.filter(song => {
+            const titleMatch = song.title.toLowerCase().includes(text.toLowerCase());
+            return titleMatch;
+        });
+        setSongDataState(filteredSongs);
+    }
+
+    function clearSearch() {
+        setSongDataState(songData);
+    }
+
+
+
     // UI Components State
     const [uiState, setUiState] = useState({
         aboutShown: false,
@@ -24,9 +44,10 @@ function App() {
         songPlaying: false,
         seekWidth: 0,
     });
+
     // Song States
     const [songState, setSongState] = useState({
-        currentSong: [songData[0]],
+        currentSong: [songDataState[0]],
         isPlaying: false,
         elapsed: 0,
         duration: 0,
@@ -39,12 +60,12 @@ function App() {
     document.body.style.backgroundImage = `url('${songState.currentSong[0].coverUrl}')`;
 
     const songEndHandler = async () => {
-        let currentIndex = songData.findIndex(
+        let currentIndex = songDataState.findIndex(
             (song) => song === songState.currentSong[0]
         );
         await setSongState({
             ...songState,
-            currentSong: [songData[(currentIndex + 1) % songData.length]],
+            currentSong: [songDataState[(currentIndex + 1) % songDataState.length]],
         });
         audioRef.current.play();
     };
@@ -61,20 +82,17 @@ function App() {
 
     return (
         <div
-            className={`app__wrapper ${
-                uiState.darkMode ? "dark-mode" : "light-mode"
-            }`}
+            className={`app__wrapper ${uiState.darkMode ? "dark-mode" : "light-mode"
+                }`}
             style={{
-                backdropFilter: `${
-                    uiState.libraryShown || uiState.aboutShown
-                        ? "none"
-                        : "blur(1.5rem)"
-                }`,
-                WebkitBackdropFilter: `${
-                    uiState.libraryShown || uiState.aboutShown
-                        ? "none"
-                        : "blur(1.5rem)"
-                }`,
+                backdropFilter: `${uiState.libraryShown || uiState.aboutShown
+                    ? "none"
+                    : "blur(1.5rem)"
+                    }`,
+                WebkitBackdropFilter: `${uiState.libraryShown || uiState.aboutShown
+                    ? "none"
+                    : "blur(1.5rem)"
+                    }`,
             }}
         >
             {/* The menu header only displays the menu options */}
@@ -94,8 +112,10 @@ function App() {
                 setUiState={setUiState}
                 songState={songState}
                 setSongState={setSongState}
-                songData={songData}
+                songData={songDataState}
                 audioRef={audioRef}
+                searchSongs={searchSongs}
+                clearSearch={clearSearch}
             />
             <About uiState={uiState} setUiState={setUiState} />
             <audio

@@ -28,18 +28,19 @@ function LibraryListItem({ song, setSongState, songState, audioRef }) {
         }, 150);
     };
     return (
-        <div
-            onClick={changeCurrentSongHandler}
-            className={`library__list-item ${
-                song.id === songState.currentSong[0].id ? "active-song" : ""
-            }`}
-        >
-            <LibrarySongCover song={song} />
-            <div className="library__song-column">
-                <LibrarySongTitle song={song} />
-                <LibrarySongArtist song={song} />
+        <>
+            <div
+                onClick={changeCurrentSongHandler}
+                className={`library__list-item ${song.id === songState.currentSong[0].id ? "active-song" : ""
+                    }`}
+            >
+                <LibrarySongCover song={song} />
+                <div className="library__song-column">
+                    <LibrarySongTitle song={song} />
+                    <LibrarySongArtist song={song} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
 

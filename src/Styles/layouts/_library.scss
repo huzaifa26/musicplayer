@@ -51,9 +51,35 @@
         &__wrapper {
             flex: 1;
         }
+        .nav__header2 {
+            display: flex;
+        }
+        &__menu {
+            &__icon {
+                display: flex;
+            }
+        }
+        &__wrapper {
+            flex: 1;
+        }
     }
 
     .disabled-on-desktop {
         color: rgba(139, 139, 139, 0.596);
     }
+}
+
+
+@media only screen and (max-width: 900px) {
+    .library {
+
+        .nav__header2 {
+            display: none;
+        }
+
+        &__wrapper {
+            flex: 1;
+        }
+    }
+
 }
